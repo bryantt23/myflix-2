@@ -10,9 +10,9 @@ describe Category do
 
   it "has many videos" do
     cat = Category.new(name: "Action")
-    vid1 = Video.new(title: 'Commando')
-    vid2 = Video.new(title: 'Predator')
-    vid3 = Video.new(title: 'Mission Impossible')
+    vid1 = Video.new(title: 'Commando', description: 'Good one')
+    vid2 = Video.new(title: 'Predator', description: 'Great one')
+    vid3 = Video.new(title: 'Mission Impossible', description: 'Awesomeness')
 
     cat.save
     vid1.save
