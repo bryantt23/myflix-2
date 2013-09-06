@@ -1,0 +1,8 @@
+%article.video_category
+  %header
+  %h3
+    = link_to "Back to All Videos", videos_path
+  .videos.row
+    - @searched_videos.each do |vid|
+      .video.span2
+        = link_to image_tag("/tmp/#{vid.small_cover_url}"), video_path(vid)
