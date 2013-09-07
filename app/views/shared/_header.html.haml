@@ -1,11 +1,11 @@
 %section#top-header.row
   %h1.span2
-    = link_to "MyFLiX"
+    = link_to "MyFLiX", "/"
   %ul.span4.clearfix
     %li= link_to "Videos", videos_path
     %li= link_to "My Queue"
     %li= link_to "People"
-  %form.span5.for-search
+  / %form.span5.for-search
   = form_tag search_videos_path, method: 'get' do
     / %input.search-query(type="text" placeholder="Search for videos here")
     = text_field_tag :search, params[:search], class: "search-query"
