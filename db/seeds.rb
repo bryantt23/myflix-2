@@ -25,3 +25,10 @@ Video.create(title: 'Monk',
               description: "Watch this Obsessive Compulsive germophobe solve the toughest crimes while laughing hysterically.",
               small_cover_url: "monk.jpg",
               large_cover_url: "monk_large.jpg")
+
+Category.create(name: "Comedies")
+
+Category.create(name: "TV Shows")
+
+Category.create(name: "Mysteries")
+
