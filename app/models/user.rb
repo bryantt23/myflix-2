@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :password, :full_name
-  validates_presence_of :email, :full_name
-  validates :password, presence: true, on: :create, length: { minimum: 6 }
+  validates_presence_of :email, :full_name, :password
+  validates_uniqueness_of :email
+
+  has_secure_password
 end

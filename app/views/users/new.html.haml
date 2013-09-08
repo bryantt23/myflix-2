@@ -1,36 +1,15 @@
 %section.register.container
   .row
     .span10.offset1
-      = bootstrap_form_for @user, html: { class: 'form-horiztonal' }, help: :block do |f|
+      = bootstrap_form_for @user, html: { class: 'form-horiztonal' } do |f|
         %header
           %h1 Register
-          = f.alert_message "You have some errors in the form."
         %fieldset
-          .control-group
-            .controls
-              = f.text_field :email, class: 'span3'
-          .control-group
-            .controls
-              = f.text_field :password, help: 'Must be at least 6 characters long', class: 'span3'
-          .control-group
-            .controls
-              = f.text_field :full_name, class: 'span3'
-        %fieldset.credit_card
-          .control-group
-            %label.control-label Credit Card Number
-            .controls
-              %input.span3(type="text")
-          .control-group
-            %label.control-label Security Code
-            .controls
-              %input.span3(type="text")
-          .control-group
-            %label.control-label Expiration
-            .controls
-              = select_month(Date.today, {add_month_numbers: true},  class: 'span2')
-              = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, class: 'span1')
+          = f.email_field :email, label: 'Email Address'
+          = f.password_field :password
+          = f.text_field :full_name, label: 'Full Name'
         %fieldset.actions.control-group
           .controls
-            / %input(type="submit" value="Sign Up" class="btn")
-            = f.secondary 'Register'
+            %input(type="submit" value="Sign Up" class="btn")
+
 
