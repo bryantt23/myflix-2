@@ -1,7 +1,7 @@
 class Video < ActiveRecord::Base
   has_many :videos_categories
   has_many :categories, through: :videos_categories
-  has_many :user_reviews
+  has_many :user_reviews, order: "created_at DESC"
 
   validates :title, presence: true
   validates :description, presence: true

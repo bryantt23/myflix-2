@@ -1,12 +1,13 @@
 class UserReviewsController < ApplicationController
+  before_filter :require_user
   def create
-    @user_review = UserReview.new(params[:user_review])
-
+    @video = Video.find(params[:video_id])
+    @user_review = @video.user_reviews.build(params[:user_review].merge!(user: current_user))
     if @user_review.save
-      flash[:notice] = "Your review has been posted."
-      redirect_to video_path
+      redirect_to @video
     else
-      render :show
+      @user_reviews = @video.user_reviews.reload
+      render "videos/show"
     end
   end
 end
