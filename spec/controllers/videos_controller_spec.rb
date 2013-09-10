@@ -9,6 +9,15 @@ describe VideosController do
       expect(assigns(:video)).to eq(video)
     end
 
+    it "sets @reviews for authenticated users" do
+      session[:user_id] = Fabricate(:user).id
+      video = Fabricate(:video)
+      review1 = Fabricate(:user_review, video: video)
+      review2 = Fabricate(:user_review, video: video)
+      get :show, id: video.id
+      expect(assigns(:user_reviews)).to match_array([review1, review2])
+    end
+
     it "redirects user to the sign in page for  unautheticated users" do
       video = Fabricate(:video)
       get :show, id: video.id
