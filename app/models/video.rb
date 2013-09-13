@@ -2,6 +2,7 @@ class Video < ActiveRecord::Base
   has_many :videos_categories
   has_many :categories, through: :videos_categories
   has_many :user_reviews, order: "created_at DESC"
+  has_many :my_queues
 
   validates :title, presence: true
   validates :description, presence: true
@@ -21,6 +22,6 @@ class Video < ActiveRecord::Base
     end
     total_ratings = total_ratings.inject(:+)
     avg_rating = total_ratings.to_f / user_reviews.count.to_f
-    avg_rating.nan? ? "Rate this video below!" : avg_rating
+    avg_rating.nan? ? "Rate this video!" : avg_rating
   end
 end
