@@ -20,6 +20,7 @@ class Video < ActiveRecord::Base
       total_ratings << review.rating
     end
     total_ratings = total_ratings.inject(:+)
-    total_ratings.to_f / user_reviews.count.to_f
+    avg_rating = total_ratings.to_f / user_reviews.count.to_f
+    avg_rating.nan? ? "Rate this video below!" : avg_rating
   end
 end
