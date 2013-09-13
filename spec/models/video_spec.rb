@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Video do
 
   it { should have_many(:categories).through(:videos_categories)}
-
   it { should validate_presence_of(:title) }
-
   it { should validate_presence_of(:description) }
+  it { should have_many(:user_reviews).order("created_at DESC") }
+  it { should have_many :my_queues}
 
   it 'can be found by title' do
     Video.create(title: "Die Hard", description: "Action Movie")
