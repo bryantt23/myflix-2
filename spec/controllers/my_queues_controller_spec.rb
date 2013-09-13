@@ -18,7 +18,7 @@ describe MyQueuesController do
       MyQueue.create(user_id: session[:user_id], video_id: video3.id, order: 1)
       get :show, id: session[:user_id]
       binding.pry
-      expect(assigns(:queue[0])).to eq(video3)
+      expect(assigns(:queue)).to eq(video3)
       expect(assigns(:queue[1])).to eq(video1)
       expect(assigns(:queue[2])).to eq(video2)
     end
