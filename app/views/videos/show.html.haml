@@ -5,12 +5,8 @@
         %img(src="/tmp/#{@video.large_cover_url}")
       .video_info.span3
         %header
-          %h3= @video.title
-          - ratings = []
-          - @video.user_reviews.each do |review|
-            - ratings << review.rating
-          - ratings = ratings.inject(:+)
-          %span Average Rating: #{ratings.to_f / @video.user_reviews.count.to_f}
+          %h3
+          %span Average Rating: #{@video.average_rating}
         %p= @video.description
         .actions
           %a.btn.btn-primary(href="") Watch Now
@@ -28,9 +24,9 @@
           %input(type="submit" value="Submit" class="btn")
           = link_to "Cancel", @video
       %header
-        %h3 User Reviews (#{@user_reviews.count})
+        %h3 User Reviews (#{@video.user_reviews.count})
       %ul
-        - @user_reviews.each do |review|
+        - @video.user_reviews.each do |review|
           %article.review
             %li.row
               .span2
