@@ -11,7 +11,8 @@
         %p= @video.description
         .actions
           %a.btn.btn-primary(href="") Watch Now
-          %a.btn(href="") + My Queue
+          =form_for @my_queue do |f|                    # This needs to be figured out.
+            = f.submit "Add to My Queue", class: 'btn'  # This too.
 %section.reviews.container
   .row
     .span10.offset1
