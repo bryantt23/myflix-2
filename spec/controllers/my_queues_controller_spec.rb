@@ -66,14 +66,18 @@ describe MyQueuesController do
   end
 
   describe "POST update" do
-    context "with valid input" do
-      it "modifies the attributes of the queue"
-      it "displays the new queue on the my_queues page"
+    it "modifies the order_id of the queue" do
+      session[:user_id] = Fabricate(:user).id
+      video1 = Fabricate(:video)
+      video2 = Fabricate(:video)
+      video3 = Fabricate(:video)
+      queued1 = MyQueue.create(user_id: session[:user_id], video_id: video3.id, order_id: 1)
+      queued2 = MyQueue.create(user_id: session[:user_id], video_id: video1.id, order_id: 2)
+      queued3 = MyQueue.create(user_id: session[:user_id], video_id: video2.id, order_id: 3)
+      queued1.order_id = 2
+      post :update, queued_videos:key => "value",
+      expect(assigns(:queue)).to eq([video2.my_queues, video1.my_queues, video3.my_queues].flatten)
     end
-
-    context "with invalid input" do
-      it "does not modify the attributes of the queue"
-      it "renders the show template"
-    end
+    it "displays the new queue on the my_queues page"
   end
 end
