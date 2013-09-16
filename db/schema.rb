@@ -11,13 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130913223843) do
+ActiveRecord::Schema.define(:version => 20130916000000) do
 
   create_table "categories", :force => true do |t|
     t.string "name"
   end
 
-  create_table "my_queues", :force => true do |t|
+  create_table "queue_items", :force => true do |t|
     t.integer  "user_id"
     t.integer  "video_id"
     t.integer  "order_id"
