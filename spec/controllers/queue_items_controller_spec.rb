@@ -92,4 +92,17 @@ describe QueueItemsController do
       expect(QueueItem.count).to eq(0)
     end
   end
+
+  describe "POST update" do
+    context "with valid input" do
+      it "updates modified order_id"
+      it "displays the new queue correctly"
+    end
+
+    context "with invalid input" do
+      it "redirects to queue page if user enters non-integer order_id"
+      it "redirects to queue page if user enters duplicate integers as order_id"
+
+    end
+  end
 end
