@@ -83,7 +83,7 @@ describe QueueItemsController do
     end
   end
 
-  describe "POST destroy" do
+  describe "DELETE destroy" do
     it "removes the desired video from the queue" do
       video = Fabricate(:video)
       session[:user_id] = Fabricate(:user).id
@@ -93,16 +93,15 @@ describe QueueItemsController do
     end
   end
 
-  describe "POST update" do
+  describe "PUT update" do
     context "with valid input" do
-      it "updates modified order_id"
-      it "displays the new queue correctly"
+      it "updates one modified order_id"
+      it "updates three modified order_ids"
     end
 
     context "with invalid input" do
       it "redirects to queue page if user enters non-integer order_id"
       it "redirects to queue page if user enters duplicate integers as order_id"
-
     end
   end
 end

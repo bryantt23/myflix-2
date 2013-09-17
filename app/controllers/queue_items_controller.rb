@@ -36,6 +36,8 @@ class QueueItemsController < ApplicationController
   end
 
   def update
+    @queue_items = QueueItem.where("user_id == #{session[:user_id]}").order("order_id")
+
   end
 
   def destroy
