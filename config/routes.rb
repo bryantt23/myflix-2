@@ -9,7 +9,7 @@ Myflix::Application.routes.draw do
   get '/logout', to: 'sessions#destroy'
   get '/register', to: 'users#new'
 
-  resources :my_queues, only: [:show]
+  resources :queue_items, only: [:show, :create, :update, :destroy]
   resources :users, only: [:create]
 
   resources :videos do

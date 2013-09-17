@@ -6,7 +6,6 @@ describe VideosController do
       session[:user_id] = Fabricate(:user).id
       video = Fabricate(:video)
       get :show, id: video.id
-      binding.pry
       expect(assigns(:video)).to eq(video)
     end
 

@@ -14,11 +14,12 @@
               %th(width="15%") Genre
               %th(width="15%") Remove
           %tbody
+          - @queue.each do |queued_item|
             %tr
               %td
                 %input(type="text" value="1")
               %td
-                = link_to "Futurama"
+                = link_to queued_item.video.title, video_path(queued_item.video.id)
               %td
                 = button_to "Play", nil, class: "btn"
               %td
@@ -29,26 +30,9 @@
                   %option(value="2") 2 Stars
                   %option(value="1") 1 Star
               %td
-                = link_to "TV Shows"
-              %td
-                = link_to "", method: :post do
-                  %i.icon-remove
-            %tr
-              %td
-                %input(type="text" value="2")
-              %td
-                = link_to "Family Guy"
-              %td
-                = button_to "Play", nil, class: "btn"
-              %td
-                %select(name="")
-                  %option(value="5") 5 Stars
-                  %option(value="4") 4 Stars
-                  %option(value="3") 3 Stars
-                  %option(value="2") 2 Stars
-                  %option(value="1") 1 Star
-              %td
-                = link_to "TV Shows"
+                - queued_item.video.categories.each do |category|
+                  = link_to category.name, category_path(category)
+                  %br
               %td
                 = link_to "", method: :post do
                   %i.icon-remove
