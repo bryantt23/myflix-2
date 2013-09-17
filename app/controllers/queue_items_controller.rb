@@ -6,7 +6,17 @@ class QueueItemsController < ApplicationController
 
   def create
     @queue_items = QueueItem.where("user_id == #{session[:user_id]}").order("order_id")
-    @queued_video = QueueItem.new(user_id: session[:user_id], video_id: params[:video_id])
+
+    if @queue_items.size == 0
+      @queued_video = QueueItem.new(user_id: session[:user_id],
+                                    video_id: params[:video_id],
+                                    order_id: 1)
+    else
+      position = @queue_items.last.order_id + 1
+      @queued_video = QueueItem.new(user_id: session[:user_id],
+                                    video_id: params[:video_id],
+                                    order_id: position)
+    end
 
     @queue_items.each do |queue_item|
       if queue_item.video.id == @queued_video.video.id

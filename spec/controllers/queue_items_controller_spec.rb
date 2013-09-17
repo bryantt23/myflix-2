@@ -44,6 +44,24 @@ describe QueueItemsController do
         post :create, video_id: video
         expect(response).to redirect_to queue_item_path(session[:user_id])
       end
+
+      it "assigns the order_id to the first item in the queue to 1" do
+        session[:user_id] = Fabricate(:user).id
+        post :create, video_id: video
+        expect(assigns(:queued_video).order_id).to eq(1)
+      end
+
+      it "assigns the order_id to the correct number when multiple items are in the queue" do
+        session[:user_id] = Fabricate(:user).id
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        video3 = Fabricate(:video)
+        QueueItem.create(user_id: session[:user_id], video_id: video1.id, order_id: 1)
+        QueueItem.create(user_id: session[:user_id], video_id: video2.id, order_id: 2)
+        QueueItem.create(user_id: session[:user_id], video_id: video3.id, order_id: 3)
+        post :create, video_id: video
+        expect(assigns(:queued_video).order_id).to eq(4)
+      end
     end
 
     context "with invalid input" do
