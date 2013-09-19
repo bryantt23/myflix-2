@@ -39,7 +39,7 @@ class QueueItemsController < ApplicationController
   def update_queue
     begin
       update_queue_items
-      normalize_queue_item_order_id
+      current_user.normalize_queue_item_order_id
     rescue ActiveRecord::RecordInvalid
       flash[:error] = "You must enter a whole number in the List Order column."
     end
@@ -50,7 +50,7 @@ class QueueItemsController < ApplicationController
   def destroy
     QueueItem.delete(params[:id])
     flash[:notice] = "You have removed a movie from your queue."
-    normalize_queue_item_order_id
+    current_user.normalize_queue_item_order_id
     redirect_to queue_item_path(session[:user_id])
   end
 
@@ -64,14 +64,4 @@ class QueueItemsController < ApplicationController
       end
     end
   end
-
-  def normalize_queue_item_order_id
-    user = User.find(session[:user_id])
-    counter = 1
-    user.queue_items.each do |queue_item|
-      queue_item.update_attributes(order_id: counter)
-      counter += 1
-    end
-  end
-
 end

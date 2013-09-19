@@ -7,4 +7,12 @@ class User < ActiveRecord::Base
 
 
   has_secure_password
+
+  def normalize_queue_item_order_id
+    counter = 1
+    queue_items.each do |queue_item|
+      queue_item.update_attributes(order_id: counter)
+      counter += 1
+    end
+  end
 end
