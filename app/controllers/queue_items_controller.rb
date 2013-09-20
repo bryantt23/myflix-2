@@ -43,7 +43,6 @@ class QueueItemsController < ApplicationController
     rescue ActiveRecord::RecordInvalid
       flash[:error] = "You must enter a whole number in the List Order column."
     end
-
     redirect_to queue_item_path(session[:user_id])
   end
 
@@ -61,6 +60,9 @@ class QueueItemsController < ApplicationController
       params[:queue_items].each do |queue_item_data|
         item = QueueItem.find(queue_item_data[:id])
         item.update_attributes!(order_id: queue_item_data[:order_id]) if item.user == current_user
+        video = Video.find(item.video_id)
+        user_review = UserReview.where("user_id == #{session[:user_id]} AND video_id == #{item.video_id}")
+        user_review.first.update_attributes(rating: queue_item_data[:rating]) if item.user == current_user
       end
     end
   end

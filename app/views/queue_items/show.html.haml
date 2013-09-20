@@ -25,7 +25,7 @@
                   %td
                     = button_to "Play", nil, class: "btn"
                   %td
-                    = queue_item.video.user_review.rating
+                    = select_tag "queue_items[][rating]", options_for_select([5,4,3,2,1].map{|n| [pluralize(n, "Star"), n]}, selected: queue_item.video.user_reviews.first.rating), { prompt: "Select", label: "Rate this Video" }
                   %td
                     - queue_item.video.categories.each do |category|
                       = link_to category.name, category_path(category)
