@@ -9,11 +9,13 @@ describe VideosController do
       expect(assigns(:video)).to eq(video)
     end
 
-    it "sets @reviews for authenticated users" do
+    it "sets @user_reviews for authenticated users" do
       session[:user_id] = Fabricate(:user).id
+      user1 = Fabricate(:user)
+      user2 = Fabricate(:user)
       video = Fabricate(:video)
-      review1 = Fabricate(:user_review, video: video)
-      review2 = Fabricate(:user_review, video: video)
+      review1 = Fabricate(:user_review, video: video, user_id: user1.id)
+      review2 = Fabricate(:user_review, video: video, user_id: user2.id)
       get :show, id: video.id
       expect(assigns(:user_reviews)).to match_array([review1, review2])
     end

@@ -12,7 +12,7 @@ describe UsersController do
     context "with valid input" do
 
       before do
-        post :create, user: Fabricate.attributes_for(:user)
+        post :create, user: {email: 'luke@stuff.com', password: 'password', full_name: 'luke tower'}
       end
 
       it "creates the user" do
