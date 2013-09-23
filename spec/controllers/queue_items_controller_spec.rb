@@ -189,7 +189,7 @@ describe QueueItemsController do
     end
 
     context "with unauthenticated users" do
-      it "redirect to the login path" do
+      it "redirects to the login path" do
         post :update_queue, queue_items: [{id: 1, order_id: 3}, {id: 2, order_id: 4}]
         expect(response).to redirect_to login_path
       end
