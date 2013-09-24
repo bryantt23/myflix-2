@@ -35,7 +35,7 @@ describe QueueItemsController do
 
       it "displays a notice" do
         post :create, video_id: video
-        expect(flash[:notice]).to eq("You've added #{video.title} movie to your queue.")
+        expect(flash[:notice]).to eq("You've added #{video.title} to your queue.")
       end
 
       it "redirects to the my_queues page" do
@@ -95,9 +95,10 @@ describe QueueItemsController do
   end
 
   describe "POST update" do
+    let(:bob) { current_user }
+
     context "with valid input" do
       it "redirects to the queue items page" do
-        bob = current_user
         create_videos_reviews_and_queue_items(bob)
         post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 2},
                                           {id: @queue_item2.id, order_id: 1}]
@@ -105,14 +106,12 @@ describe QueueItemsController do
       end
 
       it "it reorders the queue items" do
-        bob = current_user
         create_videos_reviews_and_queue_items(bob)
         post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 2},
                                           {id: @queue_item2.id, order_id: 1}]
         expect(bob.queue_items).to eq([@queue_item2, @queue_item1])
       end
       it "normalizes the order id numbers" do
-        bob = current_user
         create_videos_reviews_and_queue_items(bob)
         post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 15},
                                           {id: @queue_item2.id, order_id: 6}]
@@ -121,7 +120,6 @@ describe QueueItemsController do
       end
 
       it "updates the video's user review" do
-        bob = current_user
         video = Fabricate(:video)
         user_review = Fabricate(:user_review, user_id: bob.id, video_id: video.id, rating: 4)
         queue_item1 = Fabricate(:queue_item, user: bob, video_id: video.id, order_id: 1)
@@ -132,19 +130,16 @@ describe QueueItemsController do
 
     context "with invalid input" do
       it "redirects to queue items page" do
-        bob = current_user
         queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1)
         post :update_queue, queue_items:[{id: queue_item1.id, order_id: "FUDGE"}]
         expect(response).to redirect_to queue_item_path(session[:user_id])
       end
       it "sets the flash error message" do
-        bob = current_user
         queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1)
         post :update_queue, queue_items:[{id: queue_item1.id, order_id: "FUDGE"}]
         expect(flash[:error]).to be_present
       end
       it "does not change the queue items" do
-        bob = current_user
         create_videos_reviews_and_queue_items(bob)
         post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 3},
                                           {id: @queue_item2.id, order_id: 6.8}]
@@ -158,7 +153,6 @@ describe QueueItemsController do
 
     context "with queue items that do not belong to the current users" do
       it "does not change the queue items" do
-        bob = current_user
         joe = Fabricate(:user)
         video1 = Fabricate(:video)
         video2 = Fabricate(:video)
@@ -172,4 +166,13 @@ describe QueueItemsController do
       end
     end
   end
+end
+
+def create_videos_reviews_and_queue_items(bob)
+  video1 = Fabricate(:video)
+  video2 = Fabricate(:video)
+  user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
+  user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
+  @queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
+  @queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
 end

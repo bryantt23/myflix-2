@@ -28,7 +28,7 @@ class QueueItemsController < ApplicationController
     end
 
     if @queued_video.save
-      flash[:notice] = "You've added #{@queued_video.video.title} movie to your queue."
+      flash[:notice] = "You've added #{@queued_video.video.title} to your queue."
       redirect_to queue_item_path(session[:user_id])
     else
       flash[:error] = "Something went wrong."
