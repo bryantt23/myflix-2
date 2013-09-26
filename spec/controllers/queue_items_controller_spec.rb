@@ -99,22 +99,37 @@ describe QueueItemsController do
 
     context "with valid input" do
       it "redirects to the queue items page" do
-        create_videos_reviews_and_queue_items(bob)
-        post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 2},
-                                          {id: @queue_item2.id, order_id: 1}]
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
+        user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
+        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
+        queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
+        post :update_queue, queue_items: [{id: queue_item1.id, order_id: 2},
+                                          {id: queue_item2.id, order_id: 1}]
         expect(response).to redirect_to queue_item_path(bob.id)
       end
 
       it "it reorders the queue items" do
-        create_videos_reviews_and_queue_items(bob)
-        post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 2},
-                                          {id: @queue_item2.id, order_id: 1}]
-        expect(bob.queue_items).to eq([@queue_item2, @queue_item1])
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
+        user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
+        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
+        queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
+        post :update_queue, queue_items: [{id: queue_item1.id, order_id: 2},
+                                          {id: queue_item2.id, order_id: 1}]
+        expect(bob.queue_items).to eq([queue_item2, queue_item1])
       end
       it "normalizes the order id numbers" do
-        create_videos_reviews_and_queue_items(bob)
-        post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 15},
-                                          {id: @queue_item2.id, order_id: 6}]
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
+        user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
+        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
+        queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
+        post :update_queue, queue_items: [{id: queue_item1.id, order_id: 15},
+                                          {id: queue_item2.id, order_id: 6}]
         expect(bob.queue_items[0].order_id).to eq(1)
         expect(bob.queue_items[1].order_id).to eq(2)
       end
@@ -140,10 +155,15 @@ describe QueueItemsController do
         expect(flash[:error]).to be_present
       end
       it "does not change the queue items" do
-        create_videos_reviews_and_queue_items(bob)
-        post :update_queue, queue_items: [{id: @queue_item1.id, order_id: 3},
-                                          {id: @queue_item2.id, order_id: 6.8}]
-        expect(@queue_item1.reload.order_id).to eq(1)
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+        user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
+        user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
+        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
+        queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
+        post :update_queue, queue_items: [{id: queue_item1.id, order_id: 3},
+                                          {id: queue_item2.id, order_id: 6.8}]
+        expect(queue_item1.reload.order_id).to eq(1)
       end
     end
 
@@ -166,13 +186,4 @@ describe QueueItemsController do
       end
     end
   end
-end
-
-def create_videos_reviews_and_queue_items(bob)
-  video1 = Fabricate(:video)
-  video2 = Fabricate(:video)
-  user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
-  user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
-  @queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
-  @queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
 end

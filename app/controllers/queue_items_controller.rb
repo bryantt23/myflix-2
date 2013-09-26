@@ -20,8 +20,8 @@ class QueueItemsController < ApplicationController
     end
 
     @queue_items.each do |queue_item|
-      if queue_item.video.id == @queued_video.video.id
-        flash[:error] = "That video is already in your queue."
+      if queue_item.video_id == @queued_video.video_id
+        flash[:error] = "This video is already in your queue."
         redirect_to video_path(params[:video_id])
         return
       end

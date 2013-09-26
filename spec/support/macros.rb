@@ -10,3 +10,9 @@ end
 def clear_current_user
   session[:user_id] = nil
 end
+
+def add_video_to_queue(video)
+  visit root_path
+  click_on "video_#{video.id}"
+  click_on "Add to My Queue"
+end

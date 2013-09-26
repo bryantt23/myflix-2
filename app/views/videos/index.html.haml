@@ -1,9 +1,9 @@
 %article.video_category
-  - @categories.each do |cat|
+  - @categories.each do |category|
     %header
     %h3
-      = link_to cat.name, category_path(cat)
+      = link_to category.name, category_path(category)
     .videos.row
-      - cat.recent_videos.each do |vid|
+      - category.recent_videos.each do |video|
         .video.span2
-          = link_to image_tag("/tmp/#{vid.small_cover_url}"), video_path(vid)
+          = link_to image_tag("/tmp/#{video.small_cover_url}"), video, {:id => "video_#{video.id}"}
