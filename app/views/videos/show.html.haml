@@ -5,7 +5,7 @@
         %img(src="/tmp/#{@video.large_cover_url}")
       .video_info.span3
         %header
-          %h3
+          %h3=@video.title
           %span Average Rating:
           %strong #{@video.average_rating}
         %p= @video.description

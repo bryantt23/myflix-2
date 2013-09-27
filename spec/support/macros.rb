@@ -16,3 +16,10 @@ def add_video_to_queue(video)
   click_on "video_#{video.id}"
   click_on "Add to My Queue"
 end
+
+def login(user)
+  visit "/login"
+  fill_in :email, with: user.email
+  fill_in :password, with: user.password
+  click_button "Sign In"
+end
