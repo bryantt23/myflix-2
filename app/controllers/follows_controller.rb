@@ -15,8 +15,8 @@ class FollowsController < ApplicationController
   end
 
   def destroy
-    f = Follow.where("followed_id == #{params[:id]} AND follower_id == #{current_user.id}")
-    f.each do |f|
+    followed = Follow.where("followed_id == #{params[:id]} AND follower_id == #{current_user.id}")
+    followed.each do |f|
       Follow.delete(f.id)
     end
     redirect_to people_path
