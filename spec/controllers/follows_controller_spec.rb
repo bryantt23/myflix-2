@@ -46,4 +46,37 @@ describe FollowsController do
       expect(Follow.count).to eq(1)
     end
   end
+
+  describe "POST create" do
+    it "saves the relationship" do
+      bob = Fabricate(:user)
+      session[:user_id] = bob.id
+      steve = Fabricate(:user)
+      post :create, followed_id: steve.id
+      expect(Follow.count).to eq(1)
+    end
+    it "sets the notice if relationship is saved successfully" do
+      bob = Fabricate(:user)
+      session[:user_id] = bob.id
+      steve = Fabricate(:user)
+      post :create, followed_id: steve.id
+      expect(flash[:notice]).to eq("You are now following #{steve.full_name}")
+    end
+    it "does not save the relationship if it already exists" do
+      bob = Fabricate(:user)
+      session[:user_id] = bob.id
+      steve = Fabricate(:user)
+      relationship = Fabricate(:follow, follower: bob, followed: steve)
+      post :create, followed_id: steve.id
+      expect(Follow.count).to eq(1)
+    end
+    it "sets the error if relationship is not saved successfully" do
+      bob = Fabricate(:user)
+      session[:user_id] = bob.id
+      steve = Fabricate(:user)
+      relationship = Fabricate(:follow, follower: bob, followed: steve)
+      post :create, followed_id: steve.id
+      expect(flash[:error]).to eq("Unable to follow.")
+    end
+  end
 end
