@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :user_reviews
+  has_many :user_reviews, order: "created at DESC"
   has_many :queue_items, order: :order_id
 
   has_many :follows, foreign_key: "follower_id", class_name: "Follow", dependent: :destroy

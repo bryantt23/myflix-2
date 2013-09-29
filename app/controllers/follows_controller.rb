@@ -1,4 +1,6 @@
 class FollowsController < ApplicationController
+  before_filter :require_user
+
   def index
     @followings = current_user.users_followed
   end
