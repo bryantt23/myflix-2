@@ -5,7 +5,7 @@
         %header
           %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest('#{@user.email}'.downcase)}?s=40")
           %h2= "#{@user.full_name}'s video collections (#{@user.queue_items.count})"
-          %button.btn Follow
+          =button_to "Follow", follows_path(followed_id: @user.id), method: :post, class: 'btn', style: 'float: right'
         %table.table
           %thead
             %tr
@@ -15,7 +15,7 @@
             - @user.queue_items.each do |item|
               %tr
                 %td
-                  = link_to item.video.title, video_path(item.video)
+                  = link_to item.video.title, video_path(item.video_id)
                 %td
                   - item.video.categories.each do |category|
                     = link_to category.name, category_path(category)
@@ -31,7 +31,7 @@
             %li.row
               .span2
                 %p
-                  = link_to "#{review.video.title}"
+                  = link_to review.video.title, video_path(review.video_id)
                 %span= "Rating: #{review.rating}"
               .span8
                 %p= review.body
