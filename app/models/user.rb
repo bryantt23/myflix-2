@@ -1,13 +1,11 @@
 class User < ActiveRecord::Base
-  has_many :user_reviews, order: "created at DESC"
+  has_many :user_reviews, order: "created_at DESC"
   has_many :queue_items, order: :order_id
 
   has_many :follows, foreign_key: "follower_id", class_name: "Follow", dependent: :destroy
   has_many :users_followed, through: :follows, source: :followed
   has_many :inverse_follows, foreign_key: "followed_id", class_name: "Follow", dependent: :destroy
   has_many :users_following, through: :inverse_follows, source: :follower
-
-
 
   validates_presence_of :email, :full_name, :password
   validates_uniqueness_of :email

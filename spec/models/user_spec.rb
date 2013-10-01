@@ -6,7 +6,7 @@ describe User do
   it { should validate_presence_of(:password) }
   it { should validate_uniqueness_of(:email) }
   it { should have_many(:queue_items).order(:order_id) }
-  it { should have_many(:user_reviews).order("created at DESC") }
+  it { should have_many(:user_reviews).order("created_at DESC") }
 
   it "returns true when the user has queued the video already" do
     user = Fabricate(:user)

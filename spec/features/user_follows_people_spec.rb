@@ -13,7 +13,7 @@ feature "People I Follow page" do
     page.should have_content("Comedies")
 
     click_on "video_#{video.id}"
-    page.should have_content("#{joe.full_name}")
+    page.should have_content(joe.full_name)
 
     click_on "#{joe.full_name}"
     page.should have_button("Follow")
