@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
+  before_create :generate_token
+
   def normalize_queue_item_order_id
     counter = 1
     queue_items.each do |queue_item|
@@ -24,4 +26,13 @@ class User < ActiveRecord::Base
   def queued_video?(video)
     queue_items.map(&:video).include?(video)
   end
+
+  def generate_token
+    self.token = SecureRandom.urlsafe_base64
+  end
 end
+
+
+
+
+

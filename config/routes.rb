@@ -9,6 +9,11 @@ Myflix::Application.routes.draw do
   get '/logout', to: 'sessions#destroy'
   get '/register', to: 'users#new'
   get '/people', to: 'follows#index'
+  get '/forgot_password', to: 'forgot_passwords#new'
+  resources :forgot_passwords, only: [:create]
+  get '/forgot_password_confirmation', to: 'forgot_passwords#confirm'
+  resources :password_resets, only: [:show, :create]
+  get 'expired_token', to: 'password_resets#expired_token'
 
   resources :follows, only: [:create, :destroy]
   resources :queue_items, only: [:show, :create, :destroy]
