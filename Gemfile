@@ -31,3 +31,8 @@ group :test do
 end
 
 gem 'jquery-rails'
+gem 'figaro'
+
+group :development do
+  gem 'letter_opener'
+end
