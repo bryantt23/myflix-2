@@ -1,5 +1,5 @@
 class AppMailer < ActionMailer::Base
-  def notify_on_new_user(user)
+  def send_welcome_email(user)
     @user = user
     mail from: 'info@myflix.com', to: user.email, subject: "Welcome to Myflix!"
   end
