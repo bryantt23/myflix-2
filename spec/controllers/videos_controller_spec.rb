@@ -24,6 +24,7 @@ describe VideosController do
     it_behaves_like "require_login" do
       video = Fabricate(:video)
       let(:action) { get :show, id: video.id }
+      video.delete
     end
   end
 
