@@ -14,7 +14,7 @@ end
 def add_video_to_queue(video)
   visit root_path
   click_on "video_#{video.id}"
-  click_on "Add to My Queue"
+  click_on "+ My Queue"
 end
 
 def login(user)
