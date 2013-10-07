@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include Tokenable
   has_many :user_reviews, order: "created_at DESC"
   has_many :queue_items, order: :order_id
 
@@ -11,8 +12,6 @@ class User < ActiveRecord::Base
 
 
   has_secure_password
-
-  before_create :generate_token
 
   def normalize_queue_item_order_id
     counter = 1
@@ -33,13 +32,4 @@ class User < ActiveRecord::Base
   def queued_video?(video)
     queue_items.map(&:video).include?(video)
   end
-
-  def generate_token
-    self.token = SecureRandom.urlsafe_base64
-  end
 end
-
-
-
-
-
