@@ -9,15 +9,15 @@
         %th(width="20%") Followers
         %th(width="30%") Unfollow
     %tbody
-      - @followings.each do |followed|
+      - @relationships.each do |relationship|
         %tr
           %td
-            %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest('followed.email'.downcase)}?s=40")
-            = link_to followed.full_name
+            %img(src="http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest('relationship.followed.email'.downcase)}?s=40")
+            = link_to relationship.followed.full_name, user_path(relationship.followed)
           %td.extra-padding
-            = followed.queue_items.count
+            = relationship.followed.queue_items.count
           %td.extra-padding
-            = followed.users_following.count
+            = relationship.followed.leading_relationships.count
           %td.extra-padding
-            = link_to follow_path(followed.id), method: :delete do
+            = link_to follow_path(relationship.followed.id), method: :delete do
               %i.icon-remove

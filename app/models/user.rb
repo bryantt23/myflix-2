@@ -2,10 +2,9 @@ class User < ActiveRecord::Base
   has_many :user_reviews, order: "created_at DESC"
   has_many :queue_items, order: :order_id
 
-  has_many :follows, foreign_key: "follower_id", class_name: "Follow", dependent: :destroy
-  has_many :users_followed, through: :follows, source: :followed
-  has_many :inverse_follows, foreign_key: "followed_id", class_name: "Follow", dependent: :destroy
-  has_many :users_following, through: :inverse_follows, source: :follower
+  has_many :following_relationships, foreign_key: :follower_id, class_name: "Follow"
+  has_many :leading_relationships, foreign_key: :followed_id  , class_name: "Follow"
+  has_many :invites
 
   validates_presence_of :email, :full_name, :password
   validates_uniqueness_of :email
@@ -21,6 +20,14 @@ class User < ActiveRecord::Base
       queue_item.update_attributes(order_id: counter)
       counter += 1
     end
+  end
+
+  def follows?(another_user)
+    following_relationships.map(&:followed).include?(another_user)
+  end
+
+  def follow(another_user)
+    following_relationships.create(followed: another_user) unless another_user == self
   end
 
   def queued_video?(video)

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature "user resets password" do
 
-  scenario "user logs in and navigates to forgot password page" do
+  scenario "user logs in and resets password" do
     bob = Fabricate(:user, email: "bob@myflix.com", password: "old_password")
     visit root_path
     click_link("Sign In")
@@ -20,5 +20,6 @@ feature "user resets password" do
     fill_in :password, with: "new_password"
     click_button("Sign In")
     page.should have_content("enjoy!")
+    clear_email
   end
 end
