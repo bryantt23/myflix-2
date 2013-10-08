@@ -8,7 +8,7 @@ describe FollowsController do
       steve = Fabricate(:user)
       relationship = Fabricate(:follow, follower: bob, followed: steve)
       get :index
-      expect(assigns(:followings)).to eq([steve])
+      expect(assigns(:relationships)).to eq([relationship])
     end
 
     it_behaves_like "require_login" do

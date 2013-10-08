@@ -12,6 +12,7 @@ describe ForgotPasswordsController do
         expect(flash[:error]).to eq("Email cannot be blank.")
       end
     end
+
     context "with existing email" do
       it "redirects to the forgot password confirmation page" do
         Fabricate(:user, email: 'bob@myflix.com')
@@ -24,6 +25,7 @@ describe ForgotPasswordsController do
         expect(ActionMailer::Base.deliveries.last.to).to eq(["bob@myflix.com"])
       end
     end
+
     context "with non-existing email" do
       it "redirects to the forgot password page" do
         Fabricate(:user, email: 'bob@myflix.com')

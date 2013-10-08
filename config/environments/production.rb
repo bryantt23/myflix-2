@@ -50,7 +50,7 @@ Myflix::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-
+  config.action_mailer.default_url_options = { host: 'fierce-falls-6035.herokuapp.com' }
   # Enable threaded mode
   # config.threadsafe!
 
@@ -66,11 +66,11 @@ Myflix::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    domain:               'myflix.com',
-    user_name:            ENV["GMAIL_USERNAME"],
-    password:             ENV["GMAIL_PASSWORD"],
+    address:              ENV["MAILGUN_SMTP_SERVER"],
+    port:                 ENV["MAILGUN_SMTP_PORT"],
+    domain:               'fierce-falls-6035.herokuapp.com',
+    user_name:            ENV["MAILGUN_SMTP_LOGIN"],
+    password:             ENV["MAILGUN_SMTP_PASSWORD"],
     authentication:       'plain',
     enable_starttls_auto: true  }
 end
