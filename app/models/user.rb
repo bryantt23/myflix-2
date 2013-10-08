@@ -1,3 +1,5 @@
+require '../../lib/tokenable'
+
 class User < ActiveRecord::Base
   include Tokenable
   has_many :user_reviews, order: "created_at DESC"
