@@ -18,7 +18,7 @@ Myflix::Application.routes.draw do
   resources :invites, only: [:new, :create]
 
   resources :follows, only: [:create, :destroy]
-  resources :queue_items, only: [:show, :create, :destroy]
+  resources :queue_items, only: [:index, :create, :destroy]
   resources :users, only: [:create, :show]
   post "update_queue", to: 'queue_items#update_queue'
 
