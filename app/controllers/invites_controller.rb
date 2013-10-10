@@ -8,7 +8,7 @@ class InvitesController < ApplicationController
     @invite = Invite.new(params[:invite].merge!(inviter_id: current_user.id))
 
     if @invite.save
-      AppMailer.send_invite(@invite).deliver
+      AppMailer.delay.send_invite(@invite.id)
       flash[:success] = "You have invited #{@invite.invited_name} to join MyFlix!"
       redirect_to new_invite_path
     else

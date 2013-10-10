@@ -33,6 +33,7 @@ end
 gem 'jquery-rails'
 gem 'figaro'
 gem 'capybara-email'
+gem 'sidekiq'
 
 group :development do
   gem 'letter_opener'

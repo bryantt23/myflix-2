@@ -32,7 +32,7 @@ class QueueItemsController < ApplicationController
       redirect_to queue_items_path
     else
       flash[:error] = "Something went wrong."
-      render :show
+      render :index
     end
   end
 
