@@ -35,6 +35,7 @@ gem 'figaro'
 gem 'capybara-email'
 gem 'sidekiq'
 gem 'unicorn'
+gem 'carrierwave'
 
 group :development do
   gem 'letter_opener'
