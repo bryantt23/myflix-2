@@ -1,20 +1,20 @@
 class QueueItemsController < ApplicationController
   before_filter :require_user
 
-  def show
-    @queue_items = QueueItem.where("user_id == #{session[:user_id]}").order("order_id")
+  def index
+    @queue_items = current_user.queue_items
   end
 
   def create
-    @queue_items = QueueItem.where("user_id == #{session[:user_id]}").order("order_id")
+    @queue_items = current_user.queue_items
 
     if @queue_items.size == 0
-      @queued_video = QueueItem.new(user_id: session[:user_id],
+      @queued_video = QueueItem.new(user_id: current_user.id,
                                     video_id: params[:video_id],
                                     order_id: 1)
     else
       position = @queue_items.last.order_id + 1
-      @queued_video = QueueItem.new(user_id: session[:user_id],
+      @queued_video = QueueItem.new(user_id: current_user.id,
                                     video_id: params[:video_id],
                                     order_id: position)
     end
@@ -29,10 +29,10 @@ class QueueItemsController < ApplicationController
 
     if @queued_video.save
       flash[:notice] = "You've added #{@queued_video.video.title} to your queue."
-      redirect_to queue_item_path(session[:user_id])
+      redirect_to queue_items_path
     else
       flash[:error] = "Something went wrong."
-      render :show
+      render :index
     end
   end
 
@@ -43,14 +43,14 @@ class QueueItemsController < ApplicationController
     rescue ActiveRecord::RecordInvalid
       flash[:error] = "You must enter a whole number in the List Order column."
     end
-    redirect_to queue_item_path(session[:user_id])
+    redirect_to queue_items_path
   end
 
   def destroy
     QueueItem.delete(params[:id])
     flash[:notice] = "You have removed a movie from your queue."
     current_user.normalize_queue_item_order_id
-    redirect_to queue_item_path(session[:user_id])
+    redirect_to queue_items_path
   end
 
   private

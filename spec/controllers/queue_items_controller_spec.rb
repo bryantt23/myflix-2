@@ -6,8 +6,8 @@ describe QueueItemsController do
 
   describe "GET show" do
     it "renders the show template" do
-      get :show, id: session[:user_id]
-      expect(response).to render_template :show
+      get :index
+      expect(response).to render_template :index
     end
 
     it "puts the videos in the queue in the correct order" do
@@ -17,7 +17,7 @@ describe QueueItemsController do
       QueueItem.create(user_id: session[:user_id], video_id: video1.id, order_id: 2)
       QueueItem.create(user_id: session[:user_id], video_id: video2.id, order_id: 3)
       QueueItem.create(user_id: session[:user_id], video_id: video3.id, order_id: 1)
-      get :show, id: session[:user_id]
+      get :index
 
       expect(assigns(:queue_items)).to eq([video3.queue_items, video1.queue_items, video2.queue_items].flatten)
     end
@@ -40,7 +40,7 @@ describe QueueItemsController do
 
       it "redirects to the my_queues page" do
         post :create, video_id: video
-        expect(response).to redirect_to queue_item_path(session[:user_id])
+        expect(response).to redirect_to queue_items_path
       end
 
       it "assigns the order_id to the first item in the queue to 1" do
@@ -71,7 +71,7 @@ describe QueueItemsController do
       end
       it "renders the video page" do
         post :create
-        expect(response).to render_template :show
+        expect(response).to render_template :index
       end
     end
   end
@@ -107,7 +107,7 @@ describe QueueItemsController do
         queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
         post :update_queue, queue_items: [{id: queue_item1.id, order_id: 2},
                                           {id: queue_item2.id, order_id: 1}]
-        expect(response).to redirect_to queue_item_path(bob.id)
+        expect(response).to redirect_to queue_items_path
       end
 
       it "it reorders the queue items" do
@@ -147,7 +147,7 @@ describe QueueItemsController do
       it "redirects to queue items page" do
         queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1)
         post :update_queue, queue_items:[{id: queue_item1.id, order_id: "FUDGE"}]
-        expect(response).to redirect_to queue_item_path(session[:user_id])
+        expect(response).to redirect_to queue_items_path
       end
       it "sets the flash error message" do
         queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1)
