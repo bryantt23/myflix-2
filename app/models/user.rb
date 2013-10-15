@@ -32,8 +32,4 @@ class User < ActiveRecord::Base
   def queued_video?(video)
     queue_items.map(&:video).include?(video)
   end
-
-  def self.admin?
-    current_user.admin
-  end
 end
