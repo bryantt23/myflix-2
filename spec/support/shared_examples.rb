@@ -6,6 +6,14 @@ shared_examples "require_login" do
   end
 end
 
+shared_examples "require_admin" do
+  it "redirects to the home page" do
+    set_current_user
+    action
+    response.should redirect_to root_path
+  end
+end
+
 shared_examples "tokenable" do
   it "generates a random token when the user is created" do
     expect(object.token).to be_present
