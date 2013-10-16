@@ -2,20 +2,20 @@ class Admin::VideosController < ApplicationController
   before_filter :require_user, :require_admin
 
   def new
-      @video = Video.new
+    @video = Video.new
   end
 
   def create
-    @video = Video.new(title: params[:video][:title],
-                       description: params[:video][:description])
+    @video = Video.new(title:       params[:video][:title],
+                       description: params[:video][:description],
+                       large_cover: params[:video][:large_cover],
+                       small_cover: params[:video][:small_cover],
+                       video_url:   params[:video][:video_url])
     if @video.save
-      params[:video][:categories].each do |category_id|
-        if category_id != ""
-          VideosCategory.create(category_id: category_id, video_id: @video.id)
-        end
-      end
+      VideosCategory.create(category_id: params[:video][:categories],
+                            video_id: @video.id)
       flash[:success] = "You have added #{@video.title}"
-      render :new
+      redirect_to new_admin_video_path
     else
       flash[:error] = "Unable to add #{@video.title}. Please check the errors."
       render :new

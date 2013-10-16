@@ -36,6 +36,8 @@ gem 'capybara-email'
 gem 'sidekiq'
 gem 'unicorn'
 gem 'carrierwave'
+gem 'mini_magick'
+gem "fog", "~> 1.3.1"
 
 group :development do
   gem 'letter_opener'
