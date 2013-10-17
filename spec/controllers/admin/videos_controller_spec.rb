@@ -34,7 +34,7 @@ describe Admin::VideosController do
         set_current_admin
         category = Fabricate(:category)
         post :create, video: { title: 'Monk', description: 'good show!',
-                               categories: [category.id] }
+                               categories: category.id }
         expect(category.videos.count).to eq(1)
       end
 
@@ -42,7 +42,7 @@ describe Admin::VideosController do
         set_current_admin
         category = Fabricate(:category)
         post :create, video: { title: 'Monk', description: 'good show!',
-                               categories: [category.id] }
+                               categories: category.id }
         expect(flash[:success]).to be_present
       end
     end
@@ -51,23 +51,23 @@ describe Admin::VideosController do
       it "does not create a video" do
         set_current_admin
         category = Fabricate(:category)
-        post :create, video: {description: 'good stuff.',
-                              categories: [category.id]}
+        post :create, video: { description: 'good stuff.',
+                              categories: category.id }
         expect(category.videos.count).to eq(0)
       end
 
       it  "sets the variable" do
         set_current_admin
         category = Fabricate(:category)
-        post :create, video: {description: 'good stuff.',
-                              categories: [category.id]}
+        post :create, video: { description: 'good stuff.',
+                              categories: category.id }
         expect(assigns(:video)).to be_instance_of Video
       end
       it "flashes the error message" do
         set_current_admin
         category = Fabricate(:category)
         post :create, video: {description: 'good stuff.',
-                              categories: [category.id]}
+                              categories: category.id }
         expect(flash[:error]).to be_present
       end
 
@@ -75,7 +75,7 @@ describe Admin::VideosController do
         set_current_admin
         category = Fabricate(:category)
         post :create, video: {description: 'good stuff.',
-                              categories: [category.id]}
+                              categories: category.id }
         expect(response).to render_template :new
       end
     end
