@@ -1,7 +1,7 @@
 %section.register.container
   .row
     .span10.offset1
-      = bootstrap_form_for @user, html: { class: 'form-horiztonal' } do |f|
+      = bootstrap_form_for(@user, html: { class: 'form-horiztonal' }) do |f|
         %header
           %h1 Register
         %fieldset
@@ -11,6 +11,6 @@
           = hidden_field_tag :invite_token, @invite_token
         %fieldset.actions.control-group
           .controls
-            %input(type="submit" value="Sign Up" class="btn")
+            <script src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button" data-key="#{ENV['STRIPE_PUBLISHABLE_KEY']}" data-amount="999" data-name="Myflix Sign Up Charge" data-description="$9.99 to sign up for the best video service" data-currency="usd"> </script>
 
 
