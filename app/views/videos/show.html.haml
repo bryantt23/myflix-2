@@ -2,15 +2,15 @@
   .container
     .row
       .video_large_cover.span7.offset1
-        %img(src="/tmp/#{@video.large_cover_url}")
+        %img(src="#{@video.large_cover}")
       .video_info.span3
         %header
-          %h3=@video.title
+          %h3= @video.title
           %span Average Rating:
-          %strong #{@video.average_rating}
+          %strong= @video.average_rating
         %p= @video.description
         .actions
-          %a.btn.btn-primary(href="") Watch Now
+          %a.btn.btn-primary(href="#{@video.video_url}") Watch Now
           =link_to "+ My Queue", queue_items_path(video_id: @video), method: 'post', class: 'btn' unless current_user.queued_video?(@video)
 %section.reviews.container
   .row
@@ -20,7 +20,7 @@
           %label Rate this video
           = f.select :rating, options_for_select([5, 4, 3, 2, 1].map { |number| [pluralize(number, "Star")]})
           %label Write Review
-          =f.text_area :body, rows: 6, class: "span6"
+          =  f.text_area :body, rows: 6, class: "span6"
         %fieldset.actions.clearfix
           %input(type="submit" value="Submit" class="btn")
           = link_to "Cancel", @video

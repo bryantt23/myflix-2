@@ -4,6 +4,10 @@ Myflix::Application.routes.draw do
 
   root to: 'pages#front'
 
+  namespace :admin do
+    resources :videos, only: [:create, :new]
+  end
+
   get '/login',   to: 'sessions#new'
   post '/login',  to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'

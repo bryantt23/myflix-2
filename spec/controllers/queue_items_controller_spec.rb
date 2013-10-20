@@ -157,10 +157,14 @@ describe QueueItemsController do
       it "does not change the queue items" do
         video1 = Fabricate(:video)
         video2 = Fabricate(:video)
-        user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
-        user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
-        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
-        queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2, video_id: video2.id)
+        user_review1 = Fabricate(:user_review, video_id: video1.id,
+                                  user_id: session[:user_id], rating: 3)
+        user_review2 = Fabricate(:user_review, video_id: video2.id,
+                                  user_id: session[:user_id], rating: 4)
+        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1,
+                                 video_id: video1.id)
+        queue_item2 = Fabricate(:queue_item, user: bob, order_id: 2,
+                                 video_id: video2.id)
         post :update_queue, queue_items: [{id: queue_item1.id, order_id: 3},
                                           {id: queue_item2.id, order_id: 6.8}]
         expect(queue_item1.reload.order_id).to eq(1)
@@ -168,7 +172,8 @@ describe QueueItemsController do
     end
 
     it_behaves_like "require_login" do
-      let(:action) { post :update_queue, queue_items: [{id: 1, order_id: 3}, {id: 2, order_id: 4}] }
+      let(:action) { post :update_queue, queue_items: [{id: 1, order_id: 3},
+                                                       {id: 2, order_id: 4}] }
     end
 
     context "with queue items that do not belong to the current users" do
@@ -176,10 +181,14 @@ describe QueueItemsController do
         joe = Fabricate(:user)
         video1 = Fabricate(:video)
         video2 = Fabricate(:video)
-        user_review1 = Fabricate(:user_review, video_id: video1.id, user_id: session[:user_id], rating: 3)
-        user_review2 = Fabricate(:user_review, video_id: video2.id, user_id: session[:user_id], rating: 4)
-        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1, video_id: video1.id)
-        queue_item2 = Fabricate(:queue_item, user: joe, order_id: 2, video_id: video2.id)
+        user_review1 = Fabricate(:user_review, video_id: video1.id,
+                                  user_id: session[:user_id], rating: 3)
+        user_review2 = Fabricate(:user_review, video_id: video2.id,
+                                  user_id: session[:user_id], rating: 4)
+        queue_item1 = Fabricate(:queue_item, user: bob, order_id: 1,
+                                 video_id: video1.id)
+        queue_item2 = Fabricate(:queue_item, user: joe, order_id: 2,
+                                 video_id: video2.id)
         post :update_queue, queue_items: [{id: queue_item1.id, order_id: 3},
                                           {id: queue_item2.id, order_id: 2}]
         expect(queue_item1.reload.order_id).to eq(1)
