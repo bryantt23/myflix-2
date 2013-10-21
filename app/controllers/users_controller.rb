@@ -8,9 +8,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-    if @user.save
+    charge_sign_up_fee
+
+    if @user.save && flash[:error].empty?
       handle_invitation
-      charge_sign_up_fee
       AppMailer.send_welcome_email(@user).deliver
       redirect_to login_path
     else
@@ -37,16 +38,16 @@ class UsersController < ApplicationController
   private
 
   def charge_sign_up_fee
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-    begin
-      charge = Stripe::Charge.create(
-        :amount => 999,
-        :currency => "usd",
-        :card => params[:stripeToken],
-        :description => "Charge for #{@user.full_name}: #{@user.email}"
-      )
-    rescue Stripe::CardError => e
-      flash[:error] = e.message
+
+    charge = StripeWrapper::Charge.create(
+      :amount => 999,
+      :card => params[:stripeToken],
+      :description => "Charge for #{@user.full_name}: #{@user.email}"
+    )
+    if charge.successful?
+      return
+    else
+      flash[:error] = charge.error_message
     end
   end
 
