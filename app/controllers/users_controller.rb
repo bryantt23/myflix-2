@@ -8,12 +8,20 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-    charge_sign_up_fee
-
-    if @user.save && flash[:error].empty?
-      handle_invitation
-      AppMailer.send_welcome_email(@user).deliver
-      redirect_to login_path
+    if @user.valid?
+      charge = StripeWrapper::Charge.create(
+      :amount => 999,
+      :card => params[:stripeToken],
+      :description => "Charge for #{@user.full_name}: #{@user.email}")
+      if charge.successful?
+        @user.save
+        handle_invitation
+        AppMailer.send_welcome_email(@user).deliver
+        redirect_to login_path
+      else
+        flash[:error] = charge.error_message
+        render :new
+      end
     else
       render :new
     end
@@ -36,20 +44,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def charge_sign_up_fee
-
-    charge = StripeWrapper::Charge.create(
-      :amount => 999,
-      :card => params[:stripeToken],
-      :description => "Charge for #{@user.full_name}: #{@user.email}"
-    )
-    if charge.successful?
-      return
-    else
-      flash[:error] = charge.error_message
-    end
-  end
 
   def handle_invitation
     if params[:invite_token].present?
