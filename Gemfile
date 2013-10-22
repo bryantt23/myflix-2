@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+  source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 gem 'haml-rails'
@@ -28,16 +28,22 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem 'capybara-email'
+  gem 'vcr'
+  gem 'webmock', "1.11.0"
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
 end
 
 gem 'jquery-rails'
 gem 'figaro'
-gem 'capybara-email'
+
 gem 'sidekiq'
 gem 'unicorn'
 gem 'carrierwave'
 gem 'mini_magick'
 gem "fog", "~> 1.3.1"
+gem 'stripe'
 
 group :development do
   gem 'letter_opener'
