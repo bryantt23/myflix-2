@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
     if @user.save
       handle_invitation
+      charge_sign_up_fee
       AppMailer.send_welcome_email(@user).deliver
       redirect_to login_path
     else
@@ -34,6 +35,20 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def charge_sign_up_fee
+    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+    begin
+      charge = Stripe::Charge.create(
+        :amount => 999,
+        :currency => "usd",
+        :card => params[:stripeToken],
+        :description => "Charge for #{@user.full_name}: #{@user.email}"
+      )
+    rescue Stripe::CardError => e
+      flash[:error] = e.message
+    end
+  end
 
   def handle_invitation
     if params[:invite_token].present?
