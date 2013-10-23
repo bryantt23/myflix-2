@@ -7,6 +7,15 @@ gem 'bootstrap_form', '~> 0.3.2'
 gem 'bcrypt-ruby', '=3.0.1'
 gem 'fabrication'
 gem 'faker'
+gem 'jquery-rails'
+gem 'figaro'
+gem 'sidekiq'
+gem 'unicorn'
+gem 'carrierwave'
+gem 'mini_magick'
+gem "fog", "~> 1.3.1"
+gem 'stripe'
+gem 'draper', '~> 1.0'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -34,16 +43,6 @@ group :test do
   gem 'selenium-webdriver'
   gem 'database_cleaner'
 end
-
-gem 'jquery-rails'
-gem 'figaro'
-
-gem 'sidekiq'
-gem 'unicorn'
-gem 'carrierwave'
-gem 'mini_magick'
-gem "fog", "~> 1.3.1"
-gem 'stripe'
 
 group :development do
   gem 'letter_opener'
