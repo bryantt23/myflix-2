@@ -6,7 +6,7 @@ class VideosController < ApplicationController
   end
 
   def show
-    @video = Video.find(params[:id])
+    @video = Video.find(params[:id]).decorate
     @user_reviews = Video.find(params[:id]).user_reviews
   end
 
