@@ -11,7 +11,9 @@ describe UsersController do
   describe "POST create" do
     context "with valid input" do
 
+      let(:charge) { double(:charge, successful?: true) }
       before do
+        StripeWrapper::Charge.stub(:create).and_return(charge)
         post :create, user: {email: 'luke@stuff.com', password: 'password', full_name: 'luke tower'}
       end
 
@@ -33,6 +35,7 @@ describe UsersController do
           joe = User.where(email: 'joe@example.com').first
           expect(joe.follows?(bob)).to be_true
         end
+
         it "makes the inviter follow the user" do
           bob = Fabricate(:user)
           invite = Fabricate(:invite, inviter: bob, invited_email: 'joe@example.com')
@@ -41,6 +44,7 @@ describe UsersController do
           joe = User.where(email: 'joe@example.com').first
           expect(bob.follows?(joe)).to be_true
         end
+
         it "expires the invitation upon acceptance" do
           bob = Fabricate(:user)
           invite = Fabricate(:invite, inviter: bob, invited_email: 'joe@example.com')
@@ -54,16 +58,20 @@ describe UsersController do
 
     context "sending confirmation emails" do
 
+      let(:charge) { double(:charge, successful?: true) }
+      before { StripeWrapper::Charge.stub(:create).and_return(charge) }
       after { ActionMailer::Base.deliveries.clear }
 
       it "sends out email to the user with valid inputs" do
         post :create, user: { email: 'joe@example.com', password: 'password', full_name: 'Joe Smith'}
         expect(ActionMailer::Base.deliveries.last.to).to eq(['joe@example.com'])
       end
+
       it "sends out email containing the user's name with valid inputs" do
         post :create, user: { email: 'joe@example.com', password: 'password', full_name: 'Joe Smith'}
         expect(ActionMailer::Base.deliveries.last.body).to include('Joe Smith')
       end
+
       it "does not send out email with valid inputs" do
         post :create, user: { email: 'joe@example.com', full_name: 'Joe Smith'}
         expect(ActionMailer::Base.deliveries.count).to eq(0)
