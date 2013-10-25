@@ -9,91 +9,30 @@ describe UsersController do
   end
 
   describe "POST create" do
-    context "with valid input" do
-
-      let(:charge) { double(:charge, successful?: true) }
-      before do
-        StripeWrapper::Charge.stub(:create).and_return(charge)
-        post :create, user: {email: 'luke@stuff.com', password: 'password', full_name: 'luke tower'}
-      end
-
-      it "creates the user" do
-        expect(User.count).to eq(1)
-      end
+    context "successful user registration" do
 
       it "redirects to the login page" do
+        result = double(:registration_result, successful?: true)
+        UserRegistration.any_instance.should_receive(:register).and_return(result)
+        post :create, user: {email: 'luke@stuff.com', password: 'password', full_name: 'luke tower'}
         expect(response).to redirect_to login_path
       end
-
-    context "with valid input and an invitation" do
-
-        it "makes the user follow the inviter" do
-          bob = Fabricate(:user)
-          invite = Fabricate(:invite, inviter: bob, invited_email: 'joe@example.com')
-          post :create, user: { email: "joe@example.com", full_name: 'Joe Smith',
-                                password: 'password'}, invite_token: invite.token
-          joe = User.where(email: 'joe@example.com').first
-          expect(joe.follows?(bob)).to be_true
-        end
-
-        it "makes the inviter follow the user" do
-          bob = Fabricate(:user)
-          invite = Fabricate(:invite, inviter: bob, invited_email: 'joe@example.com')
-          post :create, user: { email: "joe@example.com", full_name: 'Joe Smith',
-                                password: 'password'}, invite_token: invite.token
-          joe = User.where(email: 'joe@example.com').first
-          expect(bob.follows?(joe)).to be_true
-        end
-
-        it "expires the invitation upon acceptance" do
-          bob = Fabricate(:user)
-          invite = Fabricate(:invite, inviter: bob, invited_email: 'joe@example.com')
-          post :create, user: { email: "joe@example.com", full_name: 'Joe Smith',
-                                password: 'password'}, invite_token: invite.token
-          joe = User.where(email: 'joe@example.com').first
-          expect(Invite.first.token).to be_nil
-        end
-      end
     end
 
-    context "sending confirmation emails" do
-
-      let(:charge) { double(:charge, successful?: true) }
-      before { StripeWrapper::Charge.stub(:create).and_return(charge) }
-      after { ActionMailer::Base.deliveries.clear }
-
-      it "sends out email to the user with valid inputs" do
-        post :create, user: { email: 'joe@example.com', password: 'password', full_name: 'Joe Smith'}
-        expect(ActionMailer::Base.deliveries.last.to).to eq(['joe@example.com'])
-      end
-
-      it "sends out email containing the user's name with valid inputs" do
-        post :create, user: { email: 'joe@example.com', password: 'password', full_name: 'Joe Smith'}
-        expect(ActionMailer::Base.deliveries.last.body).to include('Joe Smith')
-      end
-
-      it "does not send out email with valid inputs" do
-        post :create, user: { email: 'joe@example.com', full_name: 'Joe Smith'}
-        expect(ActionMailer::Base.deliveries.count).to eq(0)
-      end
-    end
-
-    context "with invalid input" do
-
-      before do
-        post :create, user: {email: 'luke@stuff.com', password: 'password'}
-      end
-
-      it "does not create user" do
-        expect(User.count).to eq(0)
-      end
+    context "failed user registration" do
 
       it "renders the :new template" do
+        result = double(:registration_result, successful?: false, error_message: 'This is an error message.')
+        UserRegistration.any_instance.should_receive(:register).and_return(result)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: '1231241'
         expect(response).to render_template :new
       end
 
-      it "sets @user" do
-        expect(assigns(:user)).to be_instance_of(User)
+      it "sets the flash error method" do
+        result = double(:registration_result, successful?: false,error_message: 'This is an error message.')
+        UserRegistration.any_instance.should_receive(:register).and_return(result)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: '1231241'
+        expect(flash[:error]).to eq("This is an error message.")
       end
     end
   end
