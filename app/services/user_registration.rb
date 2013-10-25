@@ -9,9 +9,10 @@ class UserRegistration
   def register(stripe_token, invite_token)
     if @user.valid?
       charge = StripeWrapper::Charge.create(
-      :amount => 999,
-      :card => stripe_token,
-      :description => "Charge for #{@user.full_name}: #{@user.email}")
+        :amount => 999,
+        :card => stripe_token,
+        :description => "Charge for #{@user.full_name}: #{@user.email}",
+        :email => @user.email)
       if charge.successful?
         @user.save
         handle_invitation(invite_token)
