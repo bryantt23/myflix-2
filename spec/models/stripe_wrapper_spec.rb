@@ -39,6 +39,7 @@ describe StripeWrapper do
       it "does not charge the card", :vcr do
         response.should_not be_successful
       end
+
       it "sets the error message", :vcr do
         response.error_message.should == "Your card was declined."
       end
@@ -56,6 +57,7 @@ describe StripeWrapper do
         response = StripeWrapper::Customer.create(user: alice, card: valid_token)
         expect(response).to be_successful
       end
+
       it "does not create a customer with a declined card", :vcr do
         alice = Fabricate(:user)
         response = StripeWrapper::Customer.create(user: alice, card: declined_card_token)
