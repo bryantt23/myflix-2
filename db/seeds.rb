@@ -15,26 +15,26 @@ mysteries = Category.create(name: "Mysteries")
 
 family_guy = Video.create(title: 'Family Guy',
               description: "Family Guy is a successful comedy cartoon created by Seth McFarlane. It's hilarious!",
-              small_cover_url: "family_guy.jpg",
-              large_cover_url: "family_guy.jpg",
+              small_cover: "family_guy.jpg",
+              large_cover: "family_guy.jpg",
               categories: [comedies, tv_shows, mysteries])
 
 south_park = Video.create(title: 'South Park',
               description: "South Park is created by Trey Parker and Matt Stone. It's raunchy and extremely funny.",
-              small_cover_url: "south_park.jpg",
-              large_cover_url: "south_park.jpg",
+              small_cover: "south_park.jpg",
+              large_cover: "south_park.jpg",
               categories: [comedies, tv_shows, mysteries])
 
 futurama = Video.create(title: 'Futurama',
               description: "Step into the future as created by Matt Groening. It's a blast for the whole family.",
-              small_cover_url: "futurama.jpg",
-              large_cover_url: "futurama.jpg",
+              small_cover: "futurama.jpg",
+              large_cover: "futurama.jpg",
               categories: [comedies, tv_shows, mysteries])
 
 monk = Video.create(title: 'Monk',
               description: "Watch this Obsessive Compulsive germophobe solve the toughest crimes while laughing hysterically.",
-              small_cover_url: "monk.jpg",
-              large_cover_url: "monk_large.jpg",
+              small_cover: "monk.jpg",
+              large_cover: "monk_large.jpg",
               categories: [comedies, tv_shows, mysteries])
 
 luke = User.create(full_name: 'Luke Tower', email: 'luke@myflix.com', password: "password")
