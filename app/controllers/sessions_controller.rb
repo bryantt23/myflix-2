@@ -5,12 +5,16 @@ class SessionsController < ApplicationController
 
   def create
     user = User.where(email: params[:email]).first
-    if user && user.authenticate(params[:password])
+    if user && user.authenticate(params[:password]) && !user.locked
       session[:user_id] = user.id
       redirect_to current_user.admin ? new_admin_video_path :
                   videos_path, notice: 'You are signed in, enjoy!'
     else
-      flash[:error] = "Sorry, something's wrong with your email or password."
+      if user.locked
+        flash[:error] = "Your account has been locked. Invalid card."
+      else
+        flash[:error] = "Sorry, something's wrong with your email or password."
+      end
       redirect_to login_path
     end
   end

@@ -1,8 +1,8 @@
-  source 'https://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 gem 'haml-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '2.3.2'
 gem 'bootstrap_form', '~> 0.3.2'
 gem 'bcrypt-ruby', '=3.0.1'
 gem 'fabrication'

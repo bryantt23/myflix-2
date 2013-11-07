@@ -39,6 +39,14 @@ describe "#follow" do
   bob.follow(bob)
   expect(bob.follows?(bob)).to be_false
  end
+
+ describe "#deactivate" do
+  it "deactivates the user" do
+    bob = Fabricate(:user)
+    bob.deactivate!
+    expect(bob).to be_locked
+  end
+ end
 end
 
 
