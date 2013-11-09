@@ -7,4 +7,10 @@ StripeEvent.setup do
                    amount: event.data.object.amount,
                    reference_id: event.data.object.id )
   end
+
+  subscribe 'charge.failed' do |event|
+    user = User.where(customer_token: event.data.object.customer).first
+    user.deactivate!
+    AppMailer.send_locked_account_notice(user).deliver
+  end
 end

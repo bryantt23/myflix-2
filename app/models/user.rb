@@ -32,4 +32,8 @@ class User < ActiveRecord::Base
   def queued_video?(video)
     queue_items.map(&:video).include?(video)
   end
+
+  def deactivate!
+    update_column(:locked, true)
+  end
 end
