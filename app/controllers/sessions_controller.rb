@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
     else
       if user.locked
         flash[:error] = "Your account has been locked. Invalid card."
+        AppMailer.send_locked_account_notice(user).deliver
       else
         flash[:error] = "Sorry, something's wrong with your email or password."
       end

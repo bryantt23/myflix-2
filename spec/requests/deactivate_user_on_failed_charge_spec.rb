@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "deactivate user on failed charge" do
-  let (:event_data) do
+  let(:event_data) do
     {
       "id" => "evt_102tnD233pORRa8DQ6NnJXXy",
       "created" => 1383857051,

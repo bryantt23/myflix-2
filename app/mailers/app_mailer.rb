@@ -22,6 +22,7 @@ class AppMailer < ActionMailer::Base
   end
 
   def send_locked_account_notice(user)
+    @user = user
     mail from:    'info@myflix.com',
          to:      user.email,
          subject: "You have been locked out of MyFlix, #{user.full_name}"

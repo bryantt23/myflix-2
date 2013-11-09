@@ -6,6 +6,7 @@ describe SessionsController do
       get :new
       expect(response).to render_template :new
     end
+
     it "redirects to the home page for authenticated users" do
       session[:user_id] = Fabricate(:user).id
       get :new
@@ -25,9 +26,11 @@ describe SessionsController do
         post :create, email: bob.email, password: bob.password    # of the block for the test to pass?
         expect(session[:user_id]).to eq(bob.id)
       end
+
       it "redirects to the videos path" do
         expect(response).to redirect_to videos_path
       end
+
       it "sets the notice" do
         expect(flash[:notice]).to eq("You are signed in, enjoy!")
       end
@@ -42,8 +45,17 @@ describe SessionsController do
       it "shows error message" do
         expect(flash[:error]).to eq("Sorry, something's wrong with your email or password.")
       end
+
       it "redirects to the login page" do
         expect(response).to redirect_to login_path
+      end
+    end
+
+    context "with locked account" do
+      it "sends the notice email if account is locked" do
+        bob = Fabricate(:user, locked: true)
+        post :create, email: bob.email, password: bob.password
+        expect(AppMailer.deliveries.count).to eq(1)
       end
     end
   end
@@ -58,9 +70,11 @@ describe SessionsController do
     it "sets the session user_id to nil" do
       expect(session[:user_id]).to eq(nil)
     end
+
     it "redirects to the root path" do
       expect(response).to redirect_to root_path
     end
+
     it "sets the notice" do
       expect(flash[:notice]).to eq("You are signed out.")
     end
