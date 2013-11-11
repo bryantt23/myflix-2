@@ -1,0 +1,16 @@
+%section.account.container
+  .row
+    .span10.offset1
+      = bootstrap_form_for @user, html: { class: 'form-horizontal', method: 'put'} do |f|
+        %form.form-horizontal
+          %header
+            %h1 Your Account
+          %fieldset
+            = f.text_field :email, class: 'span3'
+            = f.password_field :password, class: 'span3'
+            = f.password_field :password_confirmation, label: 'Confirm Password', class: 'span3'
+            = f.text_field :full_name, label: 'Full Name', class: 'span3'
+          %fieldset.actions.control-group
+            .controls
+              %input(type="submit" value="Update" class="btn")
+              = link_to "Cancel", videos_path

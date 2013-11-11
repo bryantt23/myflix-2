@@ -18,7 +18,7 @@
           %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
             %li
               = link_to "Invite a friend", new_invite_path
-              %a(href="#") Account
-              %a(href="#") Plan and Billing
+              = link_to "Account", edit_user_path(current_user.id)
+              = link_to "Plan and Billing"
               = link_to 'Sign Out', logout_path
 
