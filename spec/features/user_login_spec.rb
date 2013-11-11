@@ -20,6 +20,5 @@ feature "My Queue page" do
     joe = Fabricate(:user, locked: true)
     login(joe)
     page.should have_content("Invalid card.")
-    
   end
 end
