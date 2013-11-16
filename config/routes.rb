@@ -16,7 +16,8 @@ Myflix::Application.routes.draw do
   get '/logout',   to: 'sessions#destroy'
 
   get '/register', to: 'users#new'
-  get '/register/:token', to: 'users#new_with_invite_token', as: 'register_with_token'
+  get '/register/:token', to: 'users#new_with_invite_token',
+                          as: 'register_with_token'
 
   get '/people', to: 'follows#index'
 
@@ -33,9 +34,14 @@ Myflix::Application.routes.draw do
   resources :follows, only: [:create, :destroy]
 
   resources :queue_items, only: [:index, :create, :destroy]
-  post "update_queue", to: 'queue_items#update_queue'
+  post 'update_queue', to: 'queue_items#update_queue'
 
-  resources :users, only: [:create, :show, :edit, :update]
+  resources :users, only: [:create, :show, :edit, :update] do
+    member do
+      get '/plan_and_billing', to: 'users#plan_and_billing'
+      post '/cancel_service', to: 'users#cancel_service'
+    end
+  end
 
   resources :videos, only: [:index, :show] do
     collection do

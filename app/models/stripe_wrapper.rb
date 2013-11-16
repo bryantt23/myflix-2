@@ -54,6 +54,11 @@ module StripeWrapper
       end
     end
 
+    def self.cancel_service(customer_token)
+      cu = Stripe::Customer.retrieve(customer_token)
+      response = cu.cancel_subscription(at_period_end: true)
+    end
+
     def successful?
       response.present?
     end
