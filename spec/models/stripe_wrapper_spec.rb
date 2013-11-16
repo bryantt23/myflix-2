@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 describe StripeWrapper do
   let(:valid_token) do
     Stripe::Token.create(
@@ -27,21 +28,24 @@ describe StripeWrapper do
       StripeWrapper.set_api_key
     end
 
-    context "with valid credit card" do
-      it "charges the card successfully", :vcr do
-        response = StripeWrapper::Charge.create(amount: 300, card: valid_token)
-        response.should be_successful
-      end
-    end
-
-    context "with invalid credit card" do
-      let(:response) { StripeWrapper::Charge.create(amount: 300, card: declined_card_token) }
-      it "does not charge the card", :vcr do
-        response.should_not be_successful
+    describe ".create" do
+      context "with valid credit card" do
+        it "charges the card successfully", :vcr do
+          response = StripeWrapper::Charge.create(amount: 300, card: valid_token)
+          response.should be_successful
+        end
       end
 
-      it "sets the error message", :vcr do
-        response.error_message.should == "Your card was declined."
+      context "with invalid credit card" do
+        let(:response) { StripeWrapper::Charge.create(amount: 300, card: declined_card_token) }
+
+        it "does not charge the card", :vcr do
+          response.should_not be_successful
+        end
+
+        it "sets the error message", :vcr do
+          response.error_message.should == "Your card was declined."
+        end
       end
     end
   end
@@ -74,6 +78,15 @@ describe StripeWrapper do
         alice = Fabricate(:user)
         response = StripeWrapper::Customer.create(user: alice, card: valid_token)
         expect(response.customer_token).to be_present
+      end
+    end
+
+    describe ".cancel_service" do
+      it "cancels the customers subscription at next pay date", :vcr do
+        alice = Fabricate(:user)
+        customer = StripeWrapper::Customer.create(user: alice, card: valid_token)
+        response = StripeWrapper::Customer.cancel_service(customer.customer_token)
+        expect(response.cancel_at_period_end).to eq(true)
       end
     end
   end

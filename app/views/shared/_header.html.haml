@@ -19,6 +19,6 @@
             %li
               = link_to "Invite a friend", new_invite_path
               = link_to "Account", edit_user_path(current_user.id)
-              = link_to "Plan and Billing"
+              = link_to "Plan and Billing", plan_and_billing_user_path(current_user.id)
               = link_to 'Sign Out', logout_path
 

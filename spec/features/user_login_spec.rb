@@ -19,6 +19,6 @@ feature "My Queue page" do
   scenario "logging in with locked account" do
     joe = Fabricate(:user, locked: true)
     login(joe)
-    page.should have_content("Invalid card.")
+    page.should have_content("Your account has been locked.")
   end
 end

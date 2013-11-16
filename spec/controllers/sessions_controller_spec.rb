@@ -16,14 +16,15 @@ describe SessionsController do
 
   describe 'POST create' do
     context "with valid credentials" do
+      let(:bob) { Fabricate(:user) }
       before do
-        bob = Fabricate(:user)
+        Payment.create(user: bob,
+                        amount: 300,
+                        reference_id: "123")
         post :create, email: bob.email, password: bob.password
       end
 
       it "puts the signed in user in the session" do
-        bob = Fabricate(:user)                                    # These lines can't be outside
-        post :create, email: bob.email, password: bob.password    # of the block for the test to pass?
         expect(session[:user_id]).to eq(bob.id)
       end
 
@@ -51,9 +52,36 @@ describe SessionsController do
       end
     end
 
+    context "with expired subscription" do
+      it "deactivates the user's account" do
+        bob = Fabricate(:user)
+        payment = Payment.create(user: bob,
+                        amount: 300,
+                        reference_id: "123",
+                        created_at: 2.months.ago)
+        post :create, email: bob.email, password: bob.password
+        expect(bob.reload).to be_locked
+      end
+
+      it "sets the flash error message" do
+        bob = Fabricate(:user)
+        payment = Payment.create(user: bob,
+                        amount: 300,
+                        reference_id: "123",
+                        created_at: 2.months.ago)
+        post :create, email: bob.email, password: bob.password
+        expect(flash[:error]).to be_present
+      end
+    end
+
     context "with locked account" do
+      before { AppMailer.deliveries.clear }
+
       it "sends the notice email if account is locked" do
         bob = Fabricate(:user, locked: true)
+        Payment.create(user: bob,
+                        amount: 300,
+                        reference_id: "123")
         post :create, email: bob.email, password: bob.password
         expect(AppMailer.deliveries.count).to eq(1)
       end
