@@ -15,7 +15,7 @@
               %tr
                 %td The All You Can Watch Plan
                 %td
-                  = (@payments.first.created_at + 1.month).strftime('%m-%d-%Y')
+                  = (@payments.first.created_at + 1.month).strftime('%m/%d/%Y')
                 %td $9.99 per month
         = button_to "Cancel Service", cancel_service_user_path(current_user), class: "btn"
 
@@ -32,7 +32,7 @@
               - @payments.each do |payment|
                 %tr
                   %td
-                    = payment.created_at.strftime('%m-%d-%Y')
+                    = payment.created_at.strftime('%m/%d/%Y')
                   %td
-                    = "#{(payment.created_at.strftime('%m-%d-%Y'))}" " -- " "#{(payment.created_at + 1.month - 1.day).strftime('%m-%d-%Y')}"
+                    = "#{(payment.created_at.strftime('%m/%d/%Y'))}" " - " "#{(payment.created_at + 1.month - 1.day).strftime('%m/%d/%Y')}"
                   %td $9.99
