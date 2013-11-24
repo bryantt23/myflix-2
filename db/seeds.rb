@@ -42,10 +42,10 @@ bob = User.create(full_name: 'Bob Smith', email: 'bob@myflix.com', password: "bo
 mike = User.create(full_name: 'Mike Watt', email: 'mike@myflix.com', password: "mike")
 fred = User.create(full_name: 'Fred Smith', email: 'fred@myflix.com', password: "fred")
 
-Payment.create(user_id: 1, amount: 999, reference_id: '123')
-Payment.create(user_id: 2, amount: 999, reference_id: '123')
-Payment.create(user_id: 3, amount: 999, reference_id: '123')
-Payment.create(user_id: 4, amount: 999, reference_id: '123')
+Payment.create(user_id: luke.id, amount: 999, reference_id: '123')
+Payment.create(user_id: bob.id, amount: 999, reference_id: '123')
+Payment.create(user_id: mike.id, amount: 999, reference_id: '123')
+Payment.create(user_id: fred.id, amount: 999, reference_id: '123')
 
 UserReview.create(user: luke, video: monk, rating: 5, body: 'This show is hilarious!')
 UserReview.create(user: bob, video: monk, rating: 4, body: 'Great show!')
