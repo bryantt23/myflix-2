@@ -24,5 +24,6 @@ module Myflix
     end
     config.autoload_paths << "#{Rails.root}/lib"
     config.assets.initialize_on_precompile = false
+    config.assets.precompile = %w(*.js *.css)
   end
 end
