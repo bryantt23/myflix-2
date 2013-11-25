@@ -6,6 +6,6 @@ class Payment < ActiveRecord::Base
   end
 
   def self.get_user_payments(user_id)
-    Payment.where("user_id LIKE ?", "#{user_id}").order('created_at desc')
+    Payment.where(user_id: user_id).order('created_at desc')
   end
 end
