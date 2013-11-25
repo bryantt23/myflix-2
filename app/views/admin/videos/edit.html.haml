@@ -6,8 +6,10 @@
           %ul.nav.nav-tabs
             %li
               =link_to "Recent Payments", admin_payments_path
+            %li
+              =link_to "Add a New Video", new_admin_video_path
             %li.active
-              %a(href="") Add a New Video
+              %a(href="") Edit Video
           %fieldset
             = f.text_field :title, class: "span3"
             = f.select :categories, Category.all.collect {|category| [category.name, category.id]}, {}, multiple: true
@@ -17,4 +19,4 @@
             = f.text_field :video_url, class: "span3", label: "Video URL"
           %fieldset.actions.control-group
             .controls
-              %input(type="submit" value="Add Video" class="btn")
+              %input(type="submit" value="Edit Video" class="btn")
