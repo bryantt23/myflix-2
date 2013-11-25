@@ -22,6 +22,13 @@ class Admin::VideosController < ApplicationController
     end
   end
 
+  def edit
+    @video = Video.find(params[:video_id])
+  end
+
+  def update
+  end
+
   private
 
   def require_admin
