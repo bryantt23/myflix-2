@@ -5,7 +5,7 @@ Myflix::Application.routes.draw do
   root to: 'pages#front'
 
   namespace :admin do
-    resources :videos, only: [:create, :new]
+    resources :videos, only: [:create, :new, :edit, :update]
     resources :payments, only: [:index]
   end
 
