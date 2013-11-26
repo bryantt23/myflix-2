@@ -23,10 +23,19 @@ class Admin::VideosController < ApplicationController
   end
 
   def edit
-    @video = Video.find(params[:video_id])
+    @video = Video.find(params[:id])
   end
 
   def update
+   @video = Video.find(pararms[:video_id])
+   @video.update_attributes(params[:video])
+   if @video.save
+     flash[:success] = "You have updated #{@video.title}"
+     redirect_to videos_path
+   else
+     flash[:error] = "You were unable to update #{@video.title}"
+     render :edit
+   end
   end
 
   private

@@ -80,4 +80,21 @@ describe Admin::VideosController do
       end
     end
   end
+
+  describe "GET edit" do
+    it_behaves_like "require_admin" do
+      let(:action) { get :edit}
+    end
+
+    it "sets the @video variable" do
+      set_current_admin
+      video = Fabricate(:video)
+      get :edit, id: video.id
+      expect(assigns(:video)).to eq(video)
+    end
+  end
+
+  describe "POST update" do
+
+  end
 end
