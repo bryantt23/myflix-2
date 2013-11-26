@@ -23,7 +23,7 @@ class Admin::VideosController < ApplicationController
   end
 
   def edit
-    @video = Video.find(params[:video_id])
+    @video = Video.find(params[:id])
   end
 
   def update
