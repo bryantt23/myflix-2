@@ -61,7 +61,7 @@ describe UserRegistration do
 
       let(:customer) { double(:customer, successful?: true, customer_token: 'abcdefg') }
       before { StripeWrapper::Customer.stub(:create).and_return(customer) }
-      after { ActionMailer::Base.deliveries.clear }
+      before { ActionMailer::Base.deliveries.clear }
 
       it "sends out email to the user with valid inputs", :vcr do
         UserRegistration.new(Fabricate.build(:user, email: 'joe@example.com')).register("stripe_token", nil)

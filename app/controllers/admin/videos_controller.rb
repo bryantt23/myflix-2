@@ -6,14 +6,8 @@ class Admin::VideosController < ApplicationController
   end
 
   def create
-    @video = Video.new(title:       params[:video][:title],
-                       description: params[:video][:description],
-                       large_cover: params[:video][:large_cover],
-                       small_cover: params[:video][:small_cover],
-                       video_url:   params[:video][:video_url])
+    @video = Video.new(video_params)
     if @video.save
-      VideosCategory.create(category_id: params[:video][:categories],
-                            video_id: @video.id)
       flash[:success] = "You have added #{@video.title}"
       redirect_to new_admin_video_path
     else
@@ -27,11 +21,11 @@ class Admin::VideosController < ApplicationController
   end
 
   def update
-   @video = Video.find(pararms[:video_id])
-   @video.update_attributes(params[:video])
+   @video = Video.find(params[:id])
+   @video.update_attributes(video_params)
    if @video.save
      flash[:success] = "You have updated #{@video.title}"
-     redirect_to videos_path
+     redirect_to video_path(@video)
    else
      flash[:error] = "You were unable to update #{@video.title}"
      render :edit
@@ -39,6 +33,10 @@ class Admin::VideosController < ApplicationController
   end
 
   private
+
+  def video_params
+    params.require(:video).permit(:title, :description, :large_cover, :small_cover, :video_url, category_ids: [])
+  end
 
   def require_admin
     if !current_user.admin?
