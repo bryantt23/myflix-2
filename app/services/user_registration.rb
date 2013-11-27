@@ -8,12 +8,11 @@ class UserRegistration
 
   def register(stripe_token, invite_token)
     if @user.valid?
-      charge = StripeWrapper::Charge.create(
-        :amount => 999,
+      customer = StripeWrapper::Customer.create(
         :card => stripe_token,
-        :description => "Charge for #{@user.full_name}: #{@user.email}",
-        :email => @user.email)
-      if charge.successful?
+        :user => @user)
+      if customer.successful?
+        @user.customer_token = customer.customer_token
         @user.save
         handle_invitation(invite_token)
         AppMailer.send_welcome_email(@user).deliver
@@ -21,7 +20,7 @@ class UserRegistration
         self
       else
         @status = :failed
-        @error_message = charge.error_message
+        @error_message = customer.error_message
         self
       end
     else

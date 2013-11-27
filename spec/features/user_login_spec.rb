@@ -15,4 +15,10 @@ feature "My Queue page" do
     click_button "Sign In"
     page.should have_content("Sorry, something's wrong with your email or password.")
   end
+
+  scenario "logging in with locked account" do
+    joe = Fabricate(:user, locked: true)
+    login(joe)
+    page.should have_content("Your account has been locked.")
+  end
 end
