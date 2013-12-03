@@ -10,5 +10,4 @@
   %article.row
     - @category.recent_videos.each do |video|
       .video.span2
-        = link_to "", {:controller => "videos", :action => "show", :id => video.id} do
-          %img(src="/tmp/#{video.small_cover}")
+        = link_to image_tag("#{video.small_cover}"), video, {:id => "video_#{video.id}"}
